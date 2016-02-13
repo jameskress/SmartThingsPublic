@@ -75,6 +75,19 @@ metadata {
     command "redAlert"
     attribute "redAlert","string"
     
+    command "blueAlert"
+    attribute "blueAlert","string"
+    
+    command "red"
+    attribute "red","string"
+    
+    command "green"
+    attribute "green","string"
+    
+    command "blue"
+    attribute "blue","string"
+    
+    
     command "colorParty"
     attribute "colorParty","string"
 	}
@@ -109,12 +122,28 @@ metadata {
 			state "default", label: 'Red Alert', action: "redAlert", icon: "st.Lighting.light11", backgroundColor: "#FF0000"
 		}
         
+        standardTile("blueAlert", "device.greeting", width: 2, height: 2, canChangeIcon: true, canChangeBackground: true) {
+			state "default", label: 'Blue Alert', action: "blueAlert", icon: "st.Lighting.light11", backgroundColor: "#0000FF"
+		}
+        
+        standardTile("red", "device.greeting", width: 2, height: 2, canChangeIcon: true, canChangeBackground: true) {
+			state "default", label: 'Red', action: "red", icon: "st.lights.philips.hue-single", backgroundColor: "#FF0000"
+		}
+        
+        standardTile("green", "device.greeting", width: 2, height: 2, canChangeIcon: true, canChangeBackground: true) {
+			state "default", label: 'Green', action: "green", icon: "st.lights.philips.hue-single", backgroundColor: "#00FF00"
+		}
+        
+        standardTile("blue", "device.greeting", width: 2, height: 2, canChangeIcon: true, canChangeBackground: true) {
+			state "default", label: 'Blue', action: "blue", icon: "st.lights.philips.hue-single", backgroundColor: "#0000FF"
+		}
+        
         standardTile("colorParty", "device.greeting", width: 2, height: 2, canChangeIcon: true, canChangeBackground: true) {
 			state "default", label: 'Party', action: "colorParty", icon: "st.Food & Dining.dining6", backgroundColor: "#00FFFF"
 		}
         
 		main(["switch"])
-		details(["switch", "whiteLight", "redAlert", "colorParty", "refresh"])
+		details(["switch", "whiteLight", "redAlert", "blueAlert", "red", "green", "blue", "colorParty", "refresh"])
 	}
 }
 
@@ -147,6 +176,26 @@ def whiteLight() {
 def redAlert() {
 	log.debug "redAlert() Command Received"
 	zigbee.smartShield(text: "redAlert").format()
+}
+
+def blueAlert() {
+	log.debug "blueAlert() Command Received"
+	zigbee.smartShield(text: "blueAlert").format()
+}
+
+def red() {
+	log.debug "red() Command Received"
+	zigbee.smartShield(text: "red").format()
+}
+
+def green() {
+	log.debug "green() Command Received"
+	zigbee.smartShield(text: "green").format()
+}
+
+def blue() {
+	log.debug "blue() Command Received"
+	zigbee.smartShield(text: "blue").format()
 }
 
 def colorParty() {
@@ -271,6 +320,13 @@ private Map parseCatchAllMessage(String description) {
         resultMap.name = "switch"
         resultMap.value = "off" 
         resultMap.displayed = true
+    }
+    
+    if (cluster.text == "levelAck") {       
+		// Level has been set  
+        resultMap.name = "info"
+        resultMap.value = "set level cmd ack"         
+        resultMap.displayed = false  
     }
     
     else if (cluster.clusterId == 0x0006 && cluster.command == 0x0B) {			// command 0x0B = default response to command sent
