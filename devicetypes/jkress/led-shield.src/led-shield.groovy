@@ -68,6 +68,12 @@ metadata {
 	capability "Switch Level"
 	capability "Color Control"  
     attribute "info","string"
+	
+    command "counter"
+    attribute "counter","string"
+    
+    command "ambient"
+    attribute "ambient","string"
     
     command "whiteLight"
     attribute "whiteLight","string"
@@ -110,6 +116,23 @@ metadata {
 				attributeState "color", action:"setColor"
 			}
 		}
+       
+/*       multiAttributeTile(name:"lightSelect", type:"lighting", width:2, height:2, canChangeIcon: true) {
+        tileAttribute("device.lightSelect", key: "PRIMARY_CONTROL") {
+          attributeState "counter", label: '${name}', action:"lightSelect.counter", icon:"st.switches.switch.on", backgroundColor:"#ffa81e"
+          attributeState "ambient", label:'${name}', action:"lightSelect.ambient", icon:"st.switches.switch.off", backgroundColor:"#79b821"
+        }
+      }
+  */
+
+  		standardTile("ambient", "device.switch", inactiveLabel: false, decoration: "flat", width: 2, height: 2, canChangeIcon: true, canChangeBackground: true) {
+            state "default", label:"Ambient", action:"ambient", icon:"st.switches.switch.on", backgroundColor: "#ccFF00"
+		}
+        
+        standardTile("counter", "device.switch", inactiveLabel: false, decoration: "flat", width: 2, height: 2, canChangeIcon: true, canChangeBackground: true) {
+			state "default", label:"Counter", action:"counter", icon:"st.switches.switch.on", backgroundColor: "#ffffff"
+		}	
+        
 		standardTile("refresh", "device.switch", inactiveLabel: false, decoration: "flat", width: 2, height: 2) {
 			state "default", label:"", action:"refresh.refresh", icon:"st.secondary.refresh"
 		}		
@@ -143,7 +166,7 @@ metadata {
 		}
         
 		main(["switch"])
-		details(["switch", "whiteLight", "redAlert", "blueAlert", "red", "green", "blue", "colorParty", "refresh"])
+		details(["switch", "whiteLight", "redAlert", "blueAlert", "red", "green", "blue", "colorParty", "ambient", "counter", "lightSelect", "refresh"])
 	}
 }
 
@@ -156,6 +179,16 @@ def on() {
 def off() {
 	log.debug "off() command received"
 	zigbee.smartShield(text: "off").format()
+}
+
+def ambient() {
+	log.debug "ambient() command received"
+    zigbee.smartShield(text: "ambient").format()
+}
+
+def counter() {
+	log.debug "counter() command received"
+	zigbee.smartShield(text: "counter").format()
 }
 
 def hello() {
