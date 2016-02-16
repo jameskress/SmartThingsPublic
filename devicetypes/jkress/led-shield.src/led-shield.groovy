@@ -69,11 +69,14 @@ metadata {
 	capability "Color Control"  
     attribute "info","string"
 	
-    command "counter"
-    attribute "counter","string"
+    command "counterTheater"
+    attribute "counterTheater","string"
     
-    command "ambient"
-    attribute "ambient","string"
+    command "ambientTheater"
+    attribute "ambientTheater","string"
+    
+    command "bothTheaters"
+    attribute "bothTheaters","string"
     
     command "whiteLight"
     attribute "whiteLight","string"
@@ -125,13 +128,17 @@ metadata {
       }
   */
 
-  		standardTile("ambient", "device.switch", inactiveLabel: false, decoration: "flat", width: 2, height: 2, canChangeIcon: true, canChangeBackground: true) {
-            state "default", label:"Ambient", action:"ambient", icon:"st.switches.switch.on", backgroundColor: "#ccFF00"
+  		standardTile("ambientTheater", "device.switch", inactiveLabel: false, decoration: "flat", width: 2, height: 2, canChangeIcon: true, canChangeBackground: true) {
+            state "default", label:"Ambient", action:"ambientTheater", icon:"st.switches.switch.on", backgroundColor: "#ccFF00"
 		}
         
-        standardTile("counter", "device.switch", inactiveLabel: false, decoration: "flat", width: 2, height: 2, canChangeIcon: true, canChangeBackground: true) {
-			state "default", label:"Counter", action:"counter", icon:"st.switches.switch.on", backgroundColor: "#ffffff"
+        standardTile("counterTheater", "device.switch", inactiveLabel: false, decoration: "flat", width: 2, height: 2, canChangeIcon: true, canChangeBackground: true) {
+			state "default", label:"Counter", action:"counterTheater", icon:"st.switches.switch.on", backgroundColor: "#ffffcc"
 		}	
+        
+        standardTile("bothTheaters", "device.switch", inactiveLabel: false, decoration: "flat", width: 2, height: 2, canChangeIcon: true, canChangeBackground: true) {
+			state "default", label:"Both", action:"bothTheaters", icon:"st.switches.switch.on", backgroundColor: "#ffccff"
+		}
         
 		standardTile("refresh", "device.switch", inactiveLabel: false, decoration: "flat", width: 2, height: 2) {
 			state "default", label:"", action:"refresh.refresh", icon:"st.secondary.refresh"
@@ -166,7 +173,7 @@ metadata {
 		}
         
 		main(["switch"])
-		details(["switch", "whiteLight", "redAlert", "blueAlert", "red", "green", "blue", "colorParty", "ambient", "counter", "lightSelect", "refresh"])
+		details(["switch", "whiteLight", "redAlert", "blueAlert", "red", "green", "blue", "colorParty", "ambientTheater", "counterTheater", "bothTheaters", "lightSelect", "refresh"])
 	}
 }
 
@@ -181,14 +188,19 @@ def off() {
 	zigbee.smartShield(text: "off").format()
 }
 
-def ambient() {
+def ambientTheater() {
 	log.debug "ambient() command received"
-    zigbee.smartShield(text: "ambient").format()
+    zigbee.smartShield(text: "ambientTheater").format()
 }
 
-def counter() {
+def counterTheater() {
 	log.debug "counter() command received"
-	zigbee.smartShield(text: "counter").format()
+	zigbee.smartShield(text: "counterTheater").format()
+}
+
+def bothTheaters() {
+	log.debug "bothTheaters() command received"
+	zigbee.smartShield(text: "bothTheaters").format()
 }
 
 def hello() {
